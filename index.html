@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Weight Calendar</title>
+
+  
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.10.2/sql-wasm.js"></script>
+  
+</head>
+
+<body class="bg-white dark:bg-gray-900 min-h-screen transition-colors">
+  <div id="calendar" class="container mx-auto p-8 max-w-xl">
+    <div id="calendar-title" class="grid grid-cols-2"></div>
+    <hr class="pb-3 dark:border-gray-700">
+    <div id="calendar-main" class="grid grid-cols-7 gap-2 text-center"></div>
+  </div>
+
+  <div id="console" class="container mx-auto p-5 max-w-xl border-2 border-gray-300 dark:border-gray-700 rounded-md bg-gray-50 dark:bg-gray-800">
+    <div id="console-text-box" class="text-gray-900 dark:text-gray-100">
+
+    </div>
+  </div>
+
+  
+  <script src="weightDB.js"></script>  
+  <script src="calendar.js"></script>
+</body>
+
+</html>
