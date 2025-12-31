@@ -204,18 +204,24 @@ async function unitTest() {
 
     // Insert sample data and display all records
      
-    weightDB.clearAllWeights();
+    // weightDB.clearAllWeights();
 
-    weightDB.insertWeight('2025-12-30', 70.5)
-        .then(() => weightDB.getAllWeights())
-        .then(weights => {
-            const consoleBox = document.getElementById('console-text-box');
-            consoleBox.textContent = JSON.stringify(weights, null, 2);
-            console.log('All weights:', weights);
-        })
-        .catch(error => {
-            console.error('Error:', error);
-        });
+    // weightDB.insertWeight('2025-12-30', 70.5)
+    //     .then(() => weightDB.getAllWeights())
+    //     .then(weights => {
+    //         const consoleBox = document.getElementById('console-text-box');
+    //         consoleBox.textContent = JSON.stringify(weights, null, 2);
+    //         console.log('All weights:', weights);
+    //     })
+    //     .catch(error => {
+    //         console.error('Error:', error);
+    //     });
+
+    weightDB.getAllWeights().then(
+        weights => {
+            // console.log(JSON.stringify(weights))
+        }
+    )
 }
 
 unitTest()
