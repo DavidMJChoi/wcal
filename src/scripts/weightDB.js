@@ -186,42 +186,47 @@ function clearAllWeights() {
     });
 }
 
-// Export functions for global access
-window.weightDB = {
+/**
+ * Get weight records for a specific month
+ * @param {number} year - Year (e.g., 2026)
+ * @param {number} month - Month (0-11)
+ * @returns {Promise<Array>} Array of weight records for the month
+ */
+function getWeightsByMonth(year, month) {
+    return new Promise((resolve, reject) => {
+        if (!db) {
+            reject(new Error('Database not initialized'));
+            return;
+        }
+
+        const transaction = db.transaction([STORE_NAME], 'readonly');
+        const objectStore = transaction.objectStore(STORE_NAME);
+        const index = objectStore.index('date');
+        const request = index.getAll();
+
+        request.onsuccess = () => {
+            const allRecords = request.result;
+            const monthPrefix = `${year}-${String(month + 1).padStart(2, '0')}`;
+            const monthRecords = allRecords.filter(record => 
+                record.date.startsWith(monthPrefix)
+            );
+            resolve(monthRecords);
+        };
+
+        request.onerror = () => {
+            console.error('Failed to get records:', request.error);
+            reject(request.error);
+        };
+    });
+}
+
+// Export functions for ES6 module
+export const weightDB = {
     initDB,
     insertWeight,
     getAllWeights,
     getWeightByDate,
     deleteWeight,
-    clearAllWeights
+    clearAllWeights,
+    getWeightsByMonth
 };
-
-async function unitTest() {
-    // Initialize database when script loads
-    await initDB().catch(error => {
-        console.error('Failed to initialize database:', error);
-    });
-
-    // Insert sample data and display all records
-     
-    // weightDB.clearAllWeights();
-
-    // weightDB.insertWeight('2025-12-30', 70.5)
-    //     .then(() => weightDB.getAllWeights())
-    //     .then(weights => {
-    //         const consoleBox = document.getElementById('console-text-box');
-    //         consoleBox.textContent = JSON.stringify(weights, null, 2);
-    //         console.log('All weights:', weights);
-    //     })
-    //     .catch(error => {
-    //         console.error('Error:', error);
-    //     });
-
-    weightDB.getAllWeights().then(
-        weights => {
-            // console.log(JSON.stringify(weights))
-        }
-    )
-}
-
-unitTest()

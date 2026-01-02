@@ -5,5 +5,5 @@
     font-style: normal;
     font-weight: 500;
     font-display: swap;
-    src: url("fonts/FIRASANS-REGULAR.TTF") format("truetype");
+    src: url("/src/assets/fonts/FIRASANS-REGULAR.TTF") format("truetype");
 };

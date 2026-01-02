@@ -1,3 +1,8 @@
+```
+npx @tailwindcss/cli -i ./styles.css -o ./output.css --watch
+```
+
+
 # (UNDER DEVELOPMENT) Weight Calendar
 
 A component that can be used independently or be embedded.
