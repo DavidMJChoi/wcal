@@ -1,5 +1,6 @@
 import { modal } from './scripts/modal.js';
 import { weightDB } from './scripts/weightDB.js';
+import { records } from './scripts/records.js'
 
 const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 const daysOfWeek = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
@@ -40,7 +41,7 @@ function generateCalendarTitle() {
     prevMonth.addEventListener('click', goToPrevMonth);
 
     const monthName = document.createElement('div');
-    monthName.className = 'text-center';
+    monthName.className = 'font-[Fira] text-center select-none';
     monthName.textContent = monthNames[currentDate.getMonth()];
 
     const nextMonth = document.createElement('div');
@@ -53,7 +54,7 @@ function generateCalendarTitle() {
     monthTitle.appendChild(nextMonth);
 
     const year = document.createElement('div');
-    year.className = 'text-right font-bold text-gray-1000 dark:text-gray-200';
+    year.className = 'font-[Fira] select-none text-right font-bold text-gray-1000 dark:text-gray-200';
     year.textContent = currentDate.getFullYear();
 
     const calendarTitle = document.getElementById('calendar-title');
@@ -70,7 +71,7 @@ async function generateCalendarMain() {
     const year = currentDate.getFullYear();
     const month = currentDate.getMonth();
 
-    await displayMonthlyWeights(year, month);
+    await records.displayMonthlyWeights(year, month);
 
     const calendar = document.getElementById('calendar-main');
 
@@ -106,9 +107,10 @@ async function generateCalendarMain() {
         div.className = '';
 
         const dateString = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+
         weightDB.getWeightByDate(dateString).then(
             weights => {
-                const weightValue = weights[0]?.weight;
+                const weightValue = weights.length > 0 ? Math.max(...weights.map(w => w.weight)) : null;
                 weightOfDay.textContent = weightValue ? weightValue : '-';
             }
         )
@@ -171,32 +173,3 @@ async function setWeight(e, date) {
 generateCalendarTitle();
 generateCalendarMain();
 
-/**
- * Display monthly weight records in console
- * @param {number} year - Year
- * @param {number} month - Month (0-11)
- */
-async function displayMonthlyWeights(year, month) {
-    try {
-        const weights = await weightDB.getWeightsByMonth(year, month);
-        const consoleTextBox = document.getElementById('console-text-box');
-
-        if (weights.length === 0) {
-            consoleTextBox.textContent = 'No weight records for this month.';
-            return;
-        }
-
-        const sortedWeights = weights.sort((a, b) => a.date.localeCompare(b.date));
-        let outputLines = "";
-
-        sortedWeights.forEach((record) => {
-            outputLines = outputLines + record.date + " | " + record.weight + " kg<br>";
-        });
-
-        consoleTextBox.innerHTML = outputLines;
-    } catch (error) {
-        console.error('Failed to display monthly weights:', error);
-        const consoleTextBox = document.getElementById('console-text-box');
-        consoleTextBox.textContent = 'Error loading weight records.';
-    }
-}

@@ -103,6 +103,8 @@ function getAllWeights() {
     });
 }
 
+
+
 /**
  * Get weight by date
  * @param {string} date - Date in 'YYYY-MM-DD' format
@@ -207,7 +209,7 @@ function getWeightsByMonth(year, month) {
         request.onsuccess = () => {
             const allRecords = request.result;
             const monthPrefix = `${year}-${String(month + 1).padStart(2, '0')}`;
-            const monthRecords = allRecords.filter(record => 
+            const monthRecords = allRecords.filter(record =>
                 record.date.startsWith(monthPrefix)
             );
             resolve(monthRecords);
